@@ -1,4 +1,4 @@
-package hash;
+package PRG.hash;
 
 import java.util.HashMap;
 

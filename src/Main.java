@@ -1,4 +1,4 @@
-import hash.Solution;
+import PRG.hash.Solution;
 
 public class Main {
     public static void main(String[] args) {
