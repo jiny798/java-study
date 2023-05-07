@@ -1,19 +1,12 @@
-import PRG.hash.Solution;
-import PRG.hash.Solution5;
+import PRG.DFS_BFS.Solution;
 
 public class Main {
     public static void main(String[] args) {
 
         Solution solution = new Solution();
+        int[] nums = {1,1,1,1,1};
+        System.out.println(solution.solution(nums,3));
 
-        String[] genres = {"classic", "pop", "classic", "classic", "pop"};
-        int[] plays = {500, 600, 150, 800, 2500	};
 
-        Solution5 solution5 = new Solution5();
-        int[] arr = solution5.solution(genres,plays);
-
-        for(int i : arr){
-            System.out.println(i);
-        }
     }
 }
