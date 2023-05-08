@@ -1,13 +1,14 @@
 import PRG.DFS_BFS.Solution2;
 import PRG.DFS_BFS.Solution3;
+import PRG.DFS_BFS.Solution5;
 
 public class Main {
     public static void main(String[] args) {
 
-        Solution3 solution = new Solution3();
-        int[][] maps = { {1,0,1,1,1},{1,0,1,0,1},{1,0,1,1,1},{1,1,1,0,1},{0,0,0,0,1}};
+        Solution5 solution5 = new Solution5();
+        String[][] arr = {{"ICN","JFK"},{"HND", "IAD"},{"JFK", "HND"}};
 
-        System.out.println(solution.solution(maps));
+        solution5.solution(arr);
 
     }
 }
