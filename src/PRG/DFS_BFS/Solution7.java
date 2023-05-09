@@ -1,48 +1,159 @@
 package PRG.DFS_BFS;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Solution7 {
-    public static int dx[] = {1,-1,0,0};
-    public static int dy[] = {0,0,1,-1};
+    static int[] dx = {1,0,-1,0};
+    static int[] dy = {0,1,0,-1};
+    static int logint = 0;
+    static String logstring ="";
+    static int logint2 = 0;
+    static String logstring2 ="";
+
     public int solution(int[][] game_board, int[][] table) {
-        int width = game_board[0].length; //
-        int height = game_board.length; // 2면 나중에 +1, 3이면 +2만큼 오른쪽으로 이동
-        List<int[][]> boardList = new ArrayList<>();
-        boardList.add(game_board); //첫번째판 담기
+        int answer = -1;
+        int result = 0;
 
-        for (int k=0; k < 3 ; k++) { //보드판을 3개 더 제작. 90도 회전 3번
-            int[][] temp_board = new int[height][width];
-            int[][] board = boardList.get(k); //이전에 있던 보드판에서 꺼내어 복사
-            for (int i = 0; i < height; i++) {
-                for (int j = 0; j < width; j++) {
-                    if (board[i][j] == 1) { // 1,2
-                        int x = j;
-                        int y = -i + height-1;
-                        temp_board[x][y] = 1;
-                    }
+        for(int i=0;i<game_board.length;i++){
+            for(int j=0;j<game_board.length;j++){
+                logstring ="x";
+                if(game_board[i][j]==0){
+                    logint = 0;
+                    logstring ="";
+                    game_board[i][j]=1;
+                    gameboard_dfs(i,j,game_board);
+                    System.out.println("gameboard"+logstring);
+
+
+                    int ne=4;
+                    loop:
+                    while(ne!=0){ //table에 퍼즐들 하나씩 체크
+                        ne--;
+                        int[][] vis= new int[table.length][table.length];
+
+                        for(int a=0;a<table.length;a++){
+                            for(int b=0;b<table.length;b++){
+
+                                if(table[a][b]==1 && vis[a][b]==0){
+                                    logint2 = 0;
+                                    logstring2 ="";
+                                    vis[a][b]=1;
+                                    table_bfs(a,b,table,vis);
+                                    if(logstring.equals(logstring2)){
+                                        System.out.println("logstring22 ="+logstring2);
+                                        //table[a][b] 에서 시작해서 모두 0으로 만든다
+                                        table[a][b]=0;
+                                        zero_table(a,b,table);
+                                        String str = logstring2;
+                                        result++;
+                                        int p=0;
+                                        for(int s=0;s<str.length();s++){
+                                            if(str.charAt(s) == '-'){
+                                                continue;
+                                            }
+                                            p++;
+                                            if(p==3){
+                                                p=0;
+                                                result++;
+                                            }
+                                        }
+
+                                        break loop;
+                                    }
+                                }
+
+                            }
+                        }
+
+                        table_rotate(table);
+
+
+                    }//while 끝
+
                 }
             }
-            boardList.add(temp_board);
         }
 
-
-
-        return 0;
+        return result;
     }
-    public String dfs(int x,int y,int[][] arr,boolean[][] checked){
-        for (int k =0;k<4;k++){
-            int nx = x+dx[k];
-            int ny = y+dy[k];
-            if(nx>0 && ny>0 && nx< arr.length && ny<arr[0].length){
-                if(arr[nx][ny]==1 && checked[nx][ny]==false){
-                    dfs(nx,ny)
+    public static void gameboard_dfs(int a,int b, int[][] game_board){
+        for(int k=0;k<4;k++){
+            int nx = a + dx[k];
+            int ny = b + dy[k];
+            if(nx>=0&&ny>=0&& nx<game_board.length&&ny<game_board.length){
+                if(game_board[nx][ny]==0){
+                    logint++;
+                    logstring=logstring+logint+dx[k]+dy[k];
+                    game_board[nx][ny]=1;
+                    gameboard_dfs(nx,ny,game_board);
+                    logint--;
+
+                }
+            }
+        }
+    }
+
+    public static void table_bfs(int a,int b, int[][] table,int[][] vis){
+        for(int k=0;k<4;k++){
+            int nx = a + dx[k];
+            int ny = b + dy[k];
+
+            if(nx>=0&&ny>=0&& nx<table.length&&ny<table.length){
+                if(table[nx][ny]==1 && vis[nx][ny]==0){
+                    logint2++;
+                    logstring2=logstring2+logint2+dx[k]+dy[k];
+                    vis[nx][ny]=1;
+                    table_bfs(nx,ny,table,vis);
+                    logint2--;
+
+                }
+            }
+        }
+    }
+    public static void zero_table(int a,int b,int[][] table){
+        for(int k=0;k<4;k++){
+            int nx = a + dx[k];
+            int ny = b + dy[k];
+
+            if(nx>=0&&ny>=0&& nx<table.length&&ny<table.length){
+                if(table[nx][ny]==1){
+                    table[nx][ny]=0;
+                    zero_table(nx,ny,table);
                 }
             }
         }
 
-        return null;
+    }
+
+
+    public static void table_rotate(int[][] arr){
+        int[][] vist =new int[arr.length][arr.length];
+        // int[][] newarr = new int[arr.length][arr.length];
+
+        for(int i=0;i<arr.length;i++){
+            for(int j=0;j<arr.length;j++){
+
+                if(arr[i][j]>=1&&vist[i][j]==0){
+                    arr[i][j]=arr[i][j]-1;  // 현재 위치 없애고
+                    vist[i][j] = 1;
+
+                    if(arr[j][arr.length-1-i]==1){ //옮길 위치에 이미 블록이 있다면
+                        vist[j][arr.length-1-i]=0;
+                        arr[j][arr.length-1-i]=arr[j][arr.length-1-i]+1;
+                    }else{
+                        vist[j][arr.length-1-i]=1;
+                        arr[j][arr.length-1-i]=arr[j][arr.length-1-i]+1;
+                    }
+
+
+                }
+
+            }
+        }
+
     }
 
 }

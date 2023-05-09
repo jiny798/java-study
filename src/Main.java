@@ -7,9 +7,9 @@ public class Main {
     public static void main(String[] args) {
 
         int[][] game_board = {{1,1,0,0,1,0},{0,0,1,0,1,0},{0,1,1,0,0,1},{1,1,0,1,1,1},{1,0,0,0,1,0},{0,1,1,1,0,0}};
-        int[][] ta = {{1,1,0,0,1,0},{0,0,1,0,1,0},{0,1,1,0,0,1},{1,1,0,1,1,1},{1,0,0,0,1,0},{0,1,1,1,0,0}};
+        int[][] ta = {{1,0,0,1,1,0},{1,0,1,0,1,0},{0,1,1,0,1,1},{0,0,1,0,0,0},{1,1,0,1,1,0},{0,1,0,0,0,0}};
         Solution7 solution7 = new Solution7();
-        solution7.solution(game_board,ta);
-
+        int a =       solution7.solution(game_board,ta);
+        System.out.println(a);
     }
 }
