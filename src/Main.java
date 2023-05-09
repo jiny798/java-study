@@ -1,20 +1,15 @@
 import PRG.DFS_BFS.Solution2;
 import PRG.DFS_BFS.Solution3;
 import PRG.DFS_BFS.Solution5;
+import PRG.DFS_BFS.Solution7;
 
 public class Main {
     public static void main(String[] args) {
 
-        Solution5 solution5 = new Solution5();
-        String[][] arr = {{"ICN","JFK"},{"HND", "IAD"},{"JFK", "HND"}};
-
-        String[][] arr2 ={{"ICN", "SFO"}, {"ICN", "ATL"}, {"SFO", "ATL"}, {"ATL", "ICN"}, {"ATL","SFO"}};
-        System.out.println();
-        String[] Ar= solution5.solution(arr2);
-
-//        for(String str : Ar){
-//            System.out.println(str);
-//        }
+        int[][] game_board = {{1,1,0,0,1,0},{0,0,1,0,1,0},{0,1,1,0,0,1},{1,1,0,1,1,1},{1,0,0,0,1,0},{0,1,1,1,0,0}};
+        int[][] ta = {{1,1,0,0,1,0},{0,0,1,0,1,0},{0,1,1,0,0,1},{1,1,0,1,1,1},{1,0,0,0,1,0},{0,1,1,1,0,0}};
+        Solution7 solution7 = new Solution7();
+        solution7.solution(game_board,ta);
 
     }
 }
