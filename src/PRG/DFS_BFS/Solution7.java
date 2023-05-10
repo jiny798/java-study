@@ -6,164 +6,147 @@ import java.util.List;
 import java.util.Map;
 
 public class Solution7 {
-    static int[] dx = {1,0,-1,0};
-    static int[] dy = {0,1,0,-1};
-    static int logint = 0;
-    static String logstring ="";
-    static int logint2 = 0;
-    static String logstring2 ="";
+    public static int dx[] = {1,-1,0,0};
+    public static int dy[] = {0,0,1,-1};
+    public static String log="";
+    public static int logInt =0;
+    public static int cnt=0;
 
     public int solution(int[][] game_board, int[][] table) {
-        int answer = -1;
-        int result = 0;
+        int answer= 0;
+        int width = game_board[0].length; //
+        int height = game_board.length; // 2면 나중에 +1, 3이면 +2만큼 오른쪽으로 이동
+        Map<String,Integer> map = new HashMap<>();
+        boolean[][] checked = new boolean[height][width];
 
-        for(int i=0;i<game_board.length;i++){
-            for(int j=0;j<game_board.length;j++){
-                logstring ="x";
-                if(game_board[i][j]==0){
-                    logint = 0;
-                    logstring ="";
-                    game_board[i][j]=1;
-                    gameboard_dfs(i,j,game_board);
-                    System.out.println("gameboard"+logstring);
+        //table의 퍼즐 정보를 저장 - 퍼즐로그, 퍼즐 칸수
+        for(int i =0;i<height;i++){
+            for (int j=0;j<width;j++){
+                if(table[i][j]==1 && checked[i][j]==false) {
+                    log = "";
+                    cnt=0;
+                    dfs(i, j, table, checked);
+                    System.out.println(log+"--");
+                    map.put(log,cnt);
+                }
+            }
+        }
 
-
-                    int ne=4;
-                    loop:
-                    while(ne!=0){ //table에 퍼즐들 하나씩 체크
-                        ne--;
-                        int[][] vis= new int[table.length][table.length];
-
-                        for(int a=0;a<table.length;a++){
-                            for(int b=0;b<table.length;b++){
-
-                                if(table[a][b]==1 && vis[a][b]==0){
-                                    logint2 = 0;
-                                    logstring2 ="";
-                                    vis[a][b]=1;
-                                    table_bfs(a,b,table,vis);
-                                    if(logstring.equals(logstring2)){
-                                        System.out.println("logstring22 ="+logstring2);
-                                        //table[a][b] 에서 시작해서 모두 0으로 만든다
-                                        table[a][b]=0;
-                                        zero_table(a,b,table);
-                                        String str = logstring2;
-                                        result++;
-                                        int p=0;
-                                        for(int s=0;s<str.length();s++){
-                                            if(str.charAt(s) == '-'){
-                                                continue;
-                                            }
-                                            p++;
-                                            if(p==3){
-                                                p=0;
-                                                result++;
-                                            }
-                                        }
-
-                                        break loop;
-                                    }
-                                }
-
-                            }
+        int[][] temp_arr = game_board; //처음 임시보드는 게임보드 참조
+        for(int k=0;k<4;k++){
+            checked = new boolean[height][width];
+            for(int i=0;i<height;i++){
+                for(int j=0;j<width;j++){
+                    if(temp_arr[i][j]==0) { // 0 비어있는 칸이면 조사
+                        log = "";
+                        gameBoardDfs(i, j, temp_arr, checked);
+                        if (map.get(log) == null) { //조사한 퍼즐로그가 table에 있는지 확인
+                            continue;
+                        } else {
+                            answer += map.get(log); //있으면 카운트 합산
+                            map.remove(log);
+                            blockDfs(i,j,temp_arr);
                         }
-
-                        table_rotate(table);
-
-
-                    }//while 끝
-
-                }
-            }
-        }
-
-        return result;
-    }
-    public static void gameboard_dfs(int a,int b, int[][] game_board){
-        for(int k=0;k<4;k++){
-            int nx = a + dx[k];
-            int ny = b + dy[k];
-            if(nx>=0&&ny>=0&& nx<game_board.length&&ny<game_board.length){
-                if(game_board[nx][ny]==0){
-                    logint++;
-                    logstring=logstring+logint+dx[k]+dy[k];
-                    game_board[nx][ny]=1;
-                    gameboard_dfs(nx,ny,game_board);
-                    logint--;
-
-                }
-            }
-        }
-    }
-
-    public static void table_bfs(int a,int b, int[][] table,int[][] vis){
-        for(int k=0;k<4;k++){
-            int nx = a + dx[k];
-            int ny = b + dy[k];
-
-            if(nx>=0&&ny>=0&& nx<table.length&&ny<table.length){
-                if(table[nx][ny]==1 && vis[nx][ny]==0){
-                    logint2++;
-                    logstring2=logstring2+logint2+dx[k]+dy[k];
-                    vis[nx][ny]=1;
-                    table_bfs(nx,ny,table,vis);
-                    logint2--;
-
-                }
-            }
-        }
-    }
-    public static void zero_table(int a,int b,int[][] table){
-        for(int k=0;k<4;k++){
-            int nx = a + dx[k];
-            int ny = b + dy[k];
-
-            if(nx>=0&&ny>=0&& nx<table.length&&ny<table.length){
-                if(table[nx][ny]==1){
-                    table[nx][ny]=0;
-                    zero_table(nx,ny,table);
-                }
-            }
-        }
-
-    }
-
-
-    public static void table_rotate(int[][] arr){
-        int[][] vist =new int[arr.length][arr.length];
-        // int[][] newarr = new int[arr.length][arr.length];
-
-        for(int i=0;i<arr.length;i++){
-            for(int j=0;j<arr.length;j++){
-
-                if(arr[i][j]>=1&&vist[i][j]==0){
-                    arr[i][j]=arr[i][j]-1;  // 현재 위치 없애고
-                    vist[i][j] = 1;
-
-                    if(arr[j][arr.length-1-i]==1){ //옮길 위치에 이미 블록이 있다면
-                        vist[j][arr.length-1-i]=0;
-                        arr[j][arr.length-1-i]=arr[j][arr.length-1-i]+1;
-                    }else{
-                        vist[j][arr.length-1-i]=1;
-                        arr[j][arr.length-1-i]=arr[j][arr.length-1-i]+1;
                     }
-
-
                 }
-
             }
+            printArr(temp_arr);
+            //끝나고 game_board 퍼즐 90도 돌리기
+            int[][] board = new int[height][width];
+            for (int i = 0; i < height; i++) {
+                for (int j = 0; j < width; j++) {
+                    if (temp_arr[i][j] == 1) { // 1,2
+                        int x = j;
+                        int y = -i + height-1;
+                        board[x][y] = 1;
+                    }
+                }
+            }
+            temp_arr=board; //임시보드는 90도 돌린 보드 참조
+            System.out.println();
+
         }
 
+
+        return answer;
+    }
+    public void dfs(int x,int y,int[][] arr,boolean[][] checked){
+        checked[x][y] = true;
+        cnt++;
+        for (int k =0;k<4;k++){
+            int nx = x+dx[k];
+            int ny = y+dy[k];
+
+            if(nx>=0 && ny>=0 && nx < arr.length && ny < arr[0].length){
+                if(arr[nx][ny]==1 && checked[nx][ny]==false){
+                    log+=logInt;
+                    log+=generateLog(k); // 방향에 따라 로그 추가
+                    logInt++;
+                    dfs(nx,ny,arr,checked);
+                    log+="e";
+                    logInt--;
+
+                }
+            }
+        }
+    }
+
+    public void gameBoardDfs(int x,int y,int[][] arr,boolean[][] checked){
+        checked[x][y] = true;
+        for (int k =0;k<4;k++){
+            int nx = x+dx[k];
+            int ny = y+dy[k];
+
+            if(nx>=0 && ny>=0 && nx < arr.length && ny < arr[0].length){
+                if(arr[nx][ny]==0 && checked[nx][ny]==false){
+                    log+=logInt;
+                    log+=generateLog(k); // 방향에 따라 로그 추가
+                    logInt++;
+                    gameBoardDfs(nx,ny,arr,checked);
+                    log+="e";
+                    logInt--;
+                }
+            }
+        }
+    }
+    public void blockDfs(int i,int j,int[][] arr){ //해당 점부터 주변점 1로 블락처리
+        arr[i][j] = 1;
+        for (int k =0;k<4;k++){
+            int nx = i+dx[k];
+            int ny = j+dy[k];
+            if(nx>=0 && ny>=0 && nx < arr.length && ny < arr[0].length){
+                if(arr[nx][ny]==0){
+                    blockDfs(nx,ny,arr);
+                }
+            }
+        }
+    }
+
+
+    public String generateLog(int k){
+        if(k==0){
+            return "Down";
+        }
+        if(k==1){
+            return "Up";
+        }
+        if(k==2){
+            return "Right";
+        }
+        if(k==3){
+            return "Left";
+        }
+        return null;
+    }
+        public void printArr(int[][] arr){
+        for(int i=0 ;i<arr.length ; i++){
+            for(int j=0 ; j<arr[0].length ; j++){
+                System.out.print(arr[i][j] + " ");
+            }
+            System.out.println();
+        }
     }
 
 }
 
 
-//    public void printArr(int[][] arr){
-//        for(int i=0 ;i<arr.length ; i++){
-//            for(int j=0 ; j<arr[0].length ; j++){
-//                System.out.print(arr[i][j] + " ");
-//            }
-//            System.out.println();
-//        }
-//    }
