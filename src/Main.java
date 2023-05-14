@@ -1,15 +1,9 @@
-import PRG.DFS_BFS.Solution2;
-import PRG.DFS_BFS.Solution3;
-import PRG.DFS_BFS.Solution5;
-import PRG.DFS_BFS.Solution7;
+import PRG.sort.Solution;
 
 public class Main {
     public static void main(String[] args) {
+        Solution solution = new Solution();
 
-        int[][] game_board = {{1,1,0,0,1,0},{0,0,1,0,1,0},{0,1,1,0,0,1},{1,1,0,1,1,1},{1,0,0,0,1,0},{0,1,1,1,0,0}};
-        int[][] ta = {{1,0,0,1,1,0},{1,0,1,0,1,0},{0,1,1,0,1,1},{0,0,1,0,0,0},{1,1,0,1,1,0},{0,1,0,0,0,0}};
-        Solution7 solution7 = new Solution7();
-        int a =       solution7.solution(game_board,ta);
-        System.out.println(a);
+
     }
 }
