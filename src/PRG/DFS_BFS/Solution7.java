@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.*;
-class Solution7 {
+public class Solution7 {
     public static int dx[] = {1,-1,0,0};
     public static int dy[] = {0,0,1,-1};
     public static String log="";
