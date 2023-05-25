@@ -3,7 +3,6 @@ package PRG.binary;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-
 class Solution {
     public long solution(int n, int[] times) {
         long answer = Long.MAX_VALUE;
