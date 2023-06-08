@@ -47,7 +47,6 @@ public class 토마토 {
             System.out.println(cnt);
         }
     }
-
     public static boolean checkZero(int[][] arr) {
         boolean tag = false;
         Loop:
