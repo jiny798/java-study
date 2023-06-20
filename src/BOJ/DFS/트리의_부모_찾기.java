@@ -16,10 +16,11 @@ public class 트리의_부모_찾기 {
         String line1 = br.readLine();
         int N = Integer.parseInt(line1);
         size =  N ;
+
         answer = new int[N + 1];
         visited = new boolean[N+1];
         arr = new ArrayList[N+1];
-        for (int i = 1 ; i<=N ; i++){
+        for (int i = 1 ; i<=N ; i++){ // N = 7
             arr[i] = new ArrayList<Integer>();
         }
 
