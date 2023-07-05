@@ -8,51 +8,68 @@ import java.util.*;
 public class AC {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-        String first = br.readLine();
-
+        String first = br.readLine(); // 4
         int n = Integer.parseInt(first);
 
-        while (n-- > 0) {
-            String cmd = br.readLine(); //RDD
-            String size = br.readLine(); // 4
-//            int[] arr = new int[Integer.parseInt(size)];
-            ArrayList<Integer> list = new ArrayList<>();
-            String arrValue = br.readLine(); //[1,2,3,4]
-            String[] arrValueToken = arrValue.split("\\[|,|\\]");
+        while (n-- > 0) { // 4
+            String operStr = br.readLine(); // RDD
+            boolean direction = true;
+            boolean err = false;
 
-
-            for (int i = 0; i < Integer.parseInt(size); i++) {
+            int size = Integer.parseInt(br.readLine()); // 4
+            LinkedList<Integer> list = new LinkedList<>();
+            String listStr = br.readLine(); // [1,2,3,4]
+            String[] arrValueToken = listStr.split("\\[|,|\\]");
+            for (int i = 0; i < size; i++) {
                 list.add(Integer.parseInt(arrValueToken[i + 1])); // 1,2,3,4
             }
-            try {
-                startCmd(list, cmd);
-                StringBuffer buffer = new StringBuffer("[");
-                for (int i = 0; i < list.size(); i++) {
-                    buffer.append(list.get(i));
-                    if (i != list.size() - 1) {
-                        buffer.append(",");
+
+            for (int i = 0; i < operStr.length(); i++) {
+                if (operStr.charAt(i) == 'R') {
+                    direction = !direction;
+                    continue;
+                }
+                if (operStr.charAt(i) == 'D') {
+                    if (list.size() == 0) {
+                        err = true;
+                        break;
+                    }
+                    if (direction) {
+                        list.removeFirst();
+                    } else {
+                        list.removeLast();
                     }
                 }
-                buffer.append("]");
-                System.out.println(buffer);
-            } catch (IndexOutOfBoundsException e) {
+            }// for
+            if (err == true) {
                 System.out.println("error");
-            }
-
-        }
-
-    }
-
-    public static void startCmd(List<Integer> list, String cmd) {
-        for (int i = 0; i < cmd.length(); i++) {
-            if (cmd.charAt(i) == 'R') {
-                Collections.reverse(list);
             } else {
-                //cmd.charAt(i) =='D'
-                list.remove(0);
+                if (direction) { // 삭제해서 넣는걸로 구현 필요
+                    StringBuffer buffer = new StringBuffer("[");
 
+                    while (list.size() > 0) {
+                        buffer.append(list.removeFirst());
+                        if (0 != list.size()) {
+                            buffer.append(",");
+                        }
+                    }
+                    buffer.append("]");
+                    System.out.println(buffer);
+                } else {
+                    StringBuffer buffer = new StringBuffer("[");
+                    while (list.size() > 0) {
+                        buffer.append(list.removeLast());
+                        if (0 != list.size()) {
+                            buffer.append(",");
+                        }
+                    }
+                    buffer.append("]");
+                    System.out.println(buffer);
+                }
             }
+
         }
+
     }
+
 }
