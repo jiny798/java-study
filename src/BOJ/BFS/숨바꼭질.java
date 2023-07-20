@@ -3,12 +3,13 @@ package BOJ.BFS;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.stream.Stream;
 
 public class 숨바꼭질 {
-    public static int minCnt = Integer.MAX_VALUE;
     public static void main(String[] args) throws IOException {
-
+        int answer = 0;
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         String str = br.readLine();
@@ -16,49 +17,50 @@ public class 숨바꼭질 {
 
         int N = arr[0];
         int K = arr[1];
-        int[] visited = new int[100000];
-        visited[N] = 1;
-        if (N>=1) {
-            visited[N-1] = 1;
-            dfs(N - 1, K, 1,visited);
-            visited[N-1] = 0;
-        }
 
-        if (N <= 99999) {
-            visited[N+1] = 1;
-            dfs(N + 1, K, 1,visited);
-            visited[N+1] = 0;
-        }
+        boolean[] visited = new boolean[100001];
 
-        if (N <= 50000) {
-            visited[N*2] = 1;
-            dfs(N * 2, K, 1,visited);
-        }
-        System.out.println(minCnt);
+        UserPoint userPoint = new UserPoint(N, 0);
+        visited[N] = true;
 
-    }
+        Queue<UserPoint> que = new LinkedList<>();
+        que.add(userPoint);
 
-    public static void dfs(int distance , int K, int cnt,int[] visited ){
-        if(distance == K){
-            if(minCnt > cnt){
-                minCnt = cnt;
+        while (!que.isEmpty()) {
+            UserPoint findUser = que.poll();
+            int x = findUser.x;
+            int cnt = findUser.cnt;
+
+            if (x == K) {
+                answer = cnt;
+                break;
             }
-            return;
+
+            if (x >= 1 && visited[x - 1] == false) {
+                que.add(new UserPoint(x - 1, cnt + 1));
+                visited[x - 1] = true;
+            }
+            if (x <= 99999 && visited[x + 1] == false) {
+                que.add(new UserPoint(x + 1, cnt + 1));
+                visited[x + 1] = true;
+
+            }
+            if (x <= 50000 && visited[x * 2] == false) {
+                que.add(new UserPoint(x * 2, cnt + 1));
+                visited[x * 2] = true;
+            }
         }
-        if(distance>=1&& visited[distance-1] == 0) {
-            visited[distance-1] = 1;
-            dfs(distance - 1, K, cnt + 1,visited);
-            visited[distance-1] = 0;
-        }
-        if (distance <= 99999 && visited[distance+1] == 0) {
-            visited[distance+1] = 1;
-            dfs(distance + 1, K, cnt + 1,visited);
-            visited[distance+1] = 0;
-        }
-        if (distance <= 50000 && visited[distance*2] == 0) {
-            visited[distance*2] = 1;
-            dfs(distance * 2, K, cnt + 1,visited);
-            visited[distance*2] = 0;
+        System.out.println(answer);
+    }
+
+    static class UserPoint {
+        public int x;
+        public int cnt;
+
+        UserPoint(int a, int b) {
+            x = a;
+            cnt = b;
         }
     }
+
 }
