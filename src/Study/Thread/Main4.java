@@ -1,4 +1,4 @@
-package Thread;
+package Study.Thread;
 
 import java.util.ArrayList;
 import java.util.List;

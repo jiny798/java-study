@@ -1,6 +1,4 @@
-package Thread;
-
-import PRG.sort.Solution;
+package Study.Thread;
 
 public class Main {
     public static void main(String[] args) throws InterruptedException {
@@ -19,7 +17,7 @@ public class Main {
         // start를 호출해서 스레드를 시작시켜줘야 한다
         // JVM 이 새 스레드를 생성해 운영체제에게 전달
 
-        thread.setName("New Thread"); //스레드의 이름을 지정해줄수있다. 추적에 도움
+        thread.setName("New Study.Thread"); //스레드의 이름을 지정해줄수있다. 추적에 도움
         thread.setPriority(Thread.MAX_PRIORITY); //뜻????
 
         System.out.println("here is in thread:"+Thread.currentThread().getName()+" before starting a new thread");

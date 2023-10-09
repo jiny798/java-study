@@ -1,4 +1,4 @@
-package Thread;
+package Study.Thread;
 
 public class Main3 {
     public static void main(String[] args) {
@@ -12,7 +12,7 @@ public class Main3 {
 
         @Override
         public void run() {
-//            System.out.println("NewThread from "+Thread.currentThread().getName());
+//            System.out.println("NewThread from "+Study.Thread.currentThread().getName());
                 // 정적 메서드를 호출하는대신
             System.out.println("NewThread from "+this.getName());
 //            this.setPriority(); //우선순위 정보등 직접 접근 가능
